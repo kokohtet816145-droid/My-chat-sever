@@ -15,43 +15,47 @@
         .login-container button { width: 100%; padding: 12px; background: #3b82f6; color: white; border: none; border-radius: 2rem; font-weight: bold; cursor: pointer; margin-top: 8px; }
         .error { color: #ef4444; font-size: 0.8rem; margin-top: 8px; }
         /* Main App */
-        .app { display: none; width: 100%; max-width: 600px; height: 100vh; background: white; flex-direction: column; }
-        .chat-header { background: #3b82f6; color: white; padding: 16px; text-align: center; font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
+        .app { display: none; width: 100%; max-width: 600px; height: 100vh; background: white; flex-direction: column; position: relative; }
+        .chat-header { background: #3b82f6; color: white; padding: 12px 16px; text-align: center; font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
         .profile-icon { background: white; color: #3b82f6; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-        .messages-area { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
-        .message { background: #f1f5f9; padding: 8px 12px; border-radius: 1.2rem; max-width: 80%; align-self: flex-start; position: relative; }
-        .message.own { background: #3b82f6; color: white; align-self: flex-end; }
-        .msg-name { font-weight: bold; font-size: 0.75rem; margin-bottom: 4px; }
-        .admin-badge { background: gold; color: black; font-size: 0.6rem; padding: 2px 6px; border-radius: 20px; margin-left: 5px; }
-        .drawing-img { max-width: 150px; border-radius: 12px; margin-top: 5px; }
-        .rating-panel { display: flex; gap: 8px; margin-top: 6px; align-items: center; }
-        .rating-select { width: 60px; padding: 4px; border-radius: 20px; }
-        .rate-btn { background: #10b981; color: white; border: none; padding: 4px 12px; border-radius: 20px; cursor: pointer; }
-        .reactions { display: flex; gap: 6px; margin-top: 6px; }
-        .react-btn { background: #e2e8f0; border: none; border-radius: 20px; padding: 2px 8px; cursor: pointer; }
-        .input-area { display: flex; gap: 8px; padding: 12px; border-top: 1px solid #ddd; background: white; }
-        #messageInput { flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 2rem; }
+        .messages-area { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 8px; scroll-behavior: smooth; }
+        .message { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 8px; }
+        .message.own { flex-direction: row-reverse; }
+        .message-content { background: #f1f5f9; padding: 8px 12px; border-radius: 1.2rem; max-width: 75%; word-wrap: break-word; position: relative; }
+        .message.own .message-content { background: #3b82f6; color: white; }
+        .msg-name { font-weight: bold; font-size: 0.75rem; margin-bottom: 4px; display: flex; align-items: center; gap: 5px; }
+        .admin-badge { background: gold; color: black; font-size: 0.6rem; padding: 2px 6px; border-radius: 20px; }
+        .profile-pic { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; background: #cbd5e1; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: white; flex-shrink: 0; }
+        .drawing-img, .voice-audio { max-width: 180px; border-radius: 12px; margin-top: 5px; }
+        .reaction-popup { position: fixed; background: white; border-radius: 3rem; padding: 8px 12px; display: flex; gap: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.2); z-index: 1000; }
+        .reaction-popup button { background: none; border: none; font-size: 1.5rem; cursor: pointer; }
+        .input-area { display: flex; gap: 8px; padding: 12px; border-top: 1px solid #ddd; background: white; align-items: center; }
+        #messageInput { flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 2rem; outline: none; }
         button { background: #3b82f6; border: none; color: white; padding: 8px 16px; border-radius: 2rem; cursor: pointer; }
-        .draw-btn { background: #10b981; }
-        /* Drawing Modal */
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: center; z-index: 1000; }
-        .modal-content { background: white; padding: 16px; border-radius: 1rem; width: 95%; max-width: 500px; }
-        canvas { width: 100%; aspect-ratio: 1/1; background: white; border: 1px solid #ccc; border-radius: 8px; cursor: crosshair; }
-        .toolbar { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
-        .toolbar button { background: #6b7280; padding: 6px 12px; font-size: 0.8rem; }
-        /* Side Panel */
-        .side-panel { position: fixed; top: 0; right: 0; width: 280px; height: 100%; background: white; transform: translateX(100%); transition: 0.3s; z-index: 1001; padding: 16px; overflow-y: auto; box-shadow: -2px 0 8px rgba(0,0,0,0.2); }
+        .draw-btn, .mic-btn { background: #10b981; }
+        .mic-btn.recording { background: #ef4444; animation: pulse 1s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+        .scroll-down { position: absolute; bottom: 80px; right: 20px; background: #3b82f6; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.2); z-index: 10; }
+        .reply-bar { background: #e2e8f0; padding: 6px 12px; font-size: 0.8rem; display: flex; justify-content: space-between; border-radius: 2rem 2rem 0 0; }
+        .side-panel { position: fixed; top: 0; right: 0; width: 300px; height: 100%; background: white; transform: translateX(100%); transition: 0.3s; z-index: 1001; padding: 16px; overflow-y: auto; box-shadow: -2px 0 8px rgba(0,0,0,0.2); }
         .side-panel.open { transform: translateX(0); }
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; z-index: 1000; }
         .shop-item { display: flex; justify-content: space-between; margin: 12px 0; padding: 8px; background: #f1f5f9; border-radius: 2rem; align-items: center; }
-        .icon-preview { display: inline-flex; align-items: center; gap: 8px; }
-        .glitch-icon { width: 32px; height: 32px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 1.2rem; }
-        .icon-basic { background: linear-gradient(135deg, #a855f7, #ec4899); animation: glitch 0.8s infinite alternate; }
-        .icon-premium { background: linear-gradient(135deg, #fbbf24, #dc2626); animation: glitch 0.6s infinite alternate; }
-        .icon-legendary { background: radial-gradient(circle, #06b6d4, #d946ef); animation: glitch 0.4s infinite alternate; }
-        .icon-mythic { background: #1e1b2e; color: #ff7b00; animation: glitch 0.3s infinite alternate; }
-        @keyframes glitch { 0% { transform: skew(0deg); } 100% { transform: skew(2deg); } }
+        .glitch-icon { width: 40px; height: 40px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 1.4rem; transition: 0.2s; position: relative; overflow: hidden; }
+        /* Glitch effects with steam/glow */
+        .icon-basic { background: linear-gradient(135deg, #a855f7, #ec4899); animation: glitchBasic 0.8s infinite alternate, steam 2s infinite; }
+        .icon-premium { background: linear-gradient(135deg, #fbbf24, #dc2626); animation: glitchPremium 0.6s infinite alternate, steam 1.5s infinite; }
+        .icon-legendary { background: radial-gradient(circle, #06b6d4, #d946ef); animation: glitchLegendary 0.4s infinite alternate, steam 1s infinite; }
+        .icon-mythic { background: #1e1b2e; color: #ff7b00; animation: glitchMythic 0.3s infinite alternate, steam 0.8s infinite; }
+        @keyframes glitchBasic { 0% { transform: skew(0deg); text-shadow: 2px 0 #ff00cc, -2px 0 #00ffcc; } 100% { transform: skew(2deg); text-shadow: -2px 0 #ff00cc, 2px 0 #00ffcc; } }
+        @keyframes glitchPremium { 0% { transform: translate(0,0); text-shadow: -2px 0 #ff0000, 2px 0 #00ff00; } 100% { transform: translate(1px,-1px); text-shadow: 2px 0 #ff0000, -2px 0 #00ff00; } }
+        @keyframes glitchLegendary { 0% { transform: skew(0deg) translate(0); filter: hue-rotate(0deg); } 100% { transform: skew(3deg) translate(1px,0); filter: hue-rotate(15deg); } }
+        @keyframes glitchMythic { 0% { transform: translate(0) rotate(0deg); text-shadow: 2px 0 #ff4400; } 100% { transform: translate(-1px,1px) rotate(1deg); text-shadow: -2px 0 #ffaa00; } }
+        @keyframes steam { 0% { box-shadow: 0 0 0px rgba(255,255,255,0.5); } 100% { box-shadow: 0 0 15px rgba(255,255,255,0.8), 0 0 5px rgba(255,255,255,0.6); } }
         .close-panel { float: right; background: none; border: none; font-size: 1.5rem; cursor: pointer; }
+        .profile-avatar-large { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin-bottom: 8px; }
+        textarea { width: 100%; padding: 8px; border-radius: 1rem; border: 1px solid #ddd; margin-top: 8px; }
+        .chat-color-select { width: 100%; padding: 8px; margin-top: 8px; }
     </style>
 </head>
 <body>
@@ -71,35 +75,49 @@
         <div class="profile-icon" id="profileBtn"><i class="fas fa-user"></i></div>
     </div>
     <div class="messages-area" id="messagesArea"></div>
+    <div id="replyBar" class="reply-bar" style="display: none;">
+        <span><i class="fas fa-reply"></i> <span id="replyToName"></span> ကို ပြန်ကြားနေသည်</span>
+        <button id="cancelReplyBtn">✖</button>
+    </div>
     <div class="input-area">
         <input type="text" id="messageInput" placeholder="စာရိုက်ပါ...">
         <button id="sendBtn">ပို့</button>
-        <button id="drawBtn" class="draw-btn"><i class="fas fa-paintbrush"></i> ပုံဆွဲ</button>
+        <button id="drawBtn" class="draw-btn"><i class="fas fa-paintbrush"></i></button>
+        <button id="micBtn" class="mic-btn"><i class="fas fa-microphone"></i></button>
     </div>
+    <div id="scrollDownBtn" class="scroll-down"><i class="fas fa-arrow-down"></i></div>
 </div>
 
-<div id="drawingModal" class="modal">
-    <div class="modal-content">
+<!-- Drawing Modal -->
+<div id="drawingModal" style="display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); justify-content:center; align-items:center; z-index:2000;">
+    <div style="background:white; padding:16px; border-radius:1rem; width:95%; max-width:500px;">
         <canvas id="drawCanvas" width="500" height="500"></canvas>
-        <div class="toolbar">
-            <button id="pencilBtn">✏️ ခဲတံ</button>
-            <button id="eraserBtn">🧽 ခဲဖျက်</button>
+        <div style="display:flex; gap:8px; margin-top:12px; flex-wrap:wrap;">
+            <button id="pencilBtn">✏️</button>
+            <button id="eraserBtn">🧽</button>
             <input type="color" id="colorPicker" value="#000000">
             <input type="range" id="brushSize" min="2" max="40" value="4">
-            <button id="clearCanvas">🗑️ ရှင်း</button>
-            <button id="confirmDraw">✅ ပုံပို့မယ်</button>
+            <button id="clearCanvas">🗑️</button>
+            <button id="confirmDraw">✅ ပို့မယ်</button>
+            <button id="closeModal">ပိတ်</button>
         </div>
-        <button id="closeModal" style="margin-top:8px;">ပိတ်မယ်</button>
     </div>
 </div>
 
+<!-- Side Panel (Profile) -->
 <div id="sidePanel" class="side-panel">
     <button id="closePanel" class="close-panel">&times;</button>
-    <h3>ကိုယ်ရေးအချက်</h3>
-    <p><strong>နာမည်:</strong> <span id="profileName"></span></p>
-    <p><strong>အမှတ်:</strong> <span id="profilePoints">0</span> ⚡</p>
-    <p><strong>VIP:</strong> <span id="profileVip"></span></p>
-    <p><strong>Admin:</strong> <span id="profileAdmin"></span></p>
+    <div style="text-align:center;">
+        <img id="profileAvatarImg" class="profile-avatar-large" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle fill='%236366f1' cx='50' cy='50' r='50'/%3E%3Ctext fill='white' x='50' y='67' text-anchor='middle' font-size='50'%3E👤%3C/text%3E%3C/svg%3E">
+        <input type="file" id="profilePicInput" accept="image/*" style="display:none">
+        <button id="changePicBtn" style="margin:4px;">ပုံပြောင်း</button>
+    </div>
+    <div><strong>နာမည်:</strong> <span id="profileName"></span></div>
+    <div><strong>အမှတ်:</strong> <span id="profilePoints">0</span> ⚡</div>
+    <div><strong>VIP:</strong> <span id="profileVip"></span></div>
+    <div><strong>Admin:</strong> <span id="profileAdmin"></span></div>
+    <div><strong>Bio:</strong> <textarea id="profileBio" rows="2" placeholder="ကိုယ်ရေးအကျဉ်း"></textarea><button id="saveBioBtn">သိမ်း</button></div>
+    <div><strong>Chat အရောင်ပြောင်းရန်:</strong> <input type="color" id="chatColorPicker" value="#3b82f6"></div>
     <hr>
     <h4>VIP ဆိုင်</h4>
     <div class="shop-item"><span>👑 VIP (3ပုံ/နေ့)</span><button id="buyVipBtn">150 ⚡</button></div>
@@ -116,6 +134,10 @@
     let users = [];
     let messages = [];
     let drawing = false, ctx, canvas, currentTool = 'pencil', currentColor = '#000000', brushWidth = 4, drawingHistory = [];
+    let replyingTo = null;
+    let mediaRecorder, audioChunks = [];
+    let isRecording = false;
+    let pressTimer = null;
 
     const icons = {
         basic: { name: "အခြေခံ", price: 23, class: "icon-basic", icon: '<i class="fas fa-comment"></i>' },
@@ -154,7 +176,10 @@
                 isAdmin: isAdmin,
                 ownedIcons: ["basic"],
                 equippedIcon: "basic",
-                password: pass
+                password: pass,
+                bio: "",
+                profilePic: null,
+                chatColor: "#3b82f6"
             };
             users.push(user);
             await saveUser(user);
@@ -168,6 +193,17 @@
         initCanvas();
         updateProfileUI();
         renderIconShop();
+        document.getElementById('chatColorPicker').value = currentUser.chatColor || "#3b82f6";
+        document.getElementById('chatColorPicker').onchange = async (e) => {
+            currentUser.chatColor = e.target.value;
+            await saveUser(currentUser);
+        };
+        document.getElementById('profileBio').value = currentUser.bio || "";
+        document.getElementById('saveBioBtn').onclick = async () => {
+            currentUser.bio = document.getElementById('profileBio').value;
+            await saveUser(currentUser);
+            alert("Bio သိမ်းပြီး");
+        };
     }
 
     function initCanvas() {
@@ -207,39 +243,137 @@
         document.getElementById('drawingModal').style.display = 'none';
     }
 
+    // Voice recording
+    async function startRecording() {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        mediaRecorder = new MediaRecorder(stream);
+        audioChunks = [];
+        mediaRecorder.ondataavailable = event => audioChunks.push(event.data);
+        mediaRecorder.onstop = () => {
+            const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+            const reader = new FileReader();
+            reader.readAsDataURL(audioBlob);
+            reader.onloadend = () => {
+                const base64Audio = reader.result;
+                socket.emit('voice message', { senderId: currentUser.id, audioData: base64Audio, timestamp: Date.now() });
+            };
+            stream.getTracks().forEach(track => track.stop());
+        };
+        mediaRecorder.start();
+        isRecording = true;
+        document.getElementById('micBtn').classList.add('recording');
+    }
+    function stopRecording() {
+        if (mediaRecorder && isRecording) {
+            mediaRecorder.stop();
+            isRecording = false;
+            document.getElementById('micBtn').classList.remove('recording');
+        }
+    }
+
     socket.on('chat message', (msg) => {
         messages.push(msg);
         renderMessages();
+        scrollToBottom();
     });
     socket.on('drawing', (draw) => {
         messages.push(draw);
         renderMessages();
+        scrollToBottom();
     });
-    socket.on('load messages', (msgs) => { messages = msgs; renderMessages(); });
+    socket.on('voice message', (voice) => {
+        messages.push(voice);
+        renderMessages();
+        scrollToBottom();
+    });
+    socket.on('load messages', (msgs) => { messages = msgs; renderMessages(); scrollToBottom(); });
 
     function sendMessage() {
         let input = document.getElementById('messageInput');
         let text = input.value.trim();
-        if (!text) return;
-        socket.emit('chat message', { senderId: currentUser.id, text: text, timestamp: Date.now() });
+        if (!text && !replyingTo) return;
+        let finalText = replyingTo ? `@${replyingTo} ${text}` : text;
+        socket.emit('chat message', { senderId: currentUser.id, text: finalText, timestamp: Date.now() });
         input.value = '';
+        cancelReply();
+        scrollToBottom();
     }
 
     function renderMessages() {
         const container = document.getElementById('messagesArea');
         container.innerHTML = messages.map(msg => {
-            const sender = users.find(u => u.id === msg.senderId) || { name: 'Unknown', isAdmin: false };
+            const sender = users.find(u => u.id === msg.senderId) || { name: 'Unknown', isAdmin: false, profilePic: null };
             const isOwn = (currentUser && msg.senderId === currentUser.id);
             let content = '';
-            if (msg.text) content = msg.text;
+            if (msg.text) content = escapeHtml(msg.text);
             else if (msg.imageData) content = `<img src="${msg.imageData}" class="drawing-img">`;
-            return `<div class="message ${isOwn ? 'own' : ''}">
-                        <div class="msg-name">${escapeHtml(sender.name)} ${sender.isAdmin ? '<span class="admin-badge">Admin</span>' : ''}</div>
-                        <div>${content}</div>
+            else if (msg.audioData) content = `<audio controls src="${msg.audioData}" class="voice-audio"></audio>`;
+            const profileImg = sender.profilePic ? `<img src="${sender.profilePic}" class="profile-pic">` : `<div class="profile-pic"><i class="fas fa-user"></i></div>`;
+            const msgColor = isOwn ? (currentUser.chatColor || "#3b82f6") : "";
+            return `<div class="message ${isOwn ? 'own' : ''}" data-sender="${sender.name}" data-id="${msg.id}">
+                        ${!isOwn ? profileImg : ''}
+                        <div class="message-content" style="${isOwn ? `background:${msgColor};` : ''}">
+                            <div class="msg-name">${escapeHtml(sender.name)} ${sender.isAdmin ? '<span class="admin-badge">Admin</span>' : ''}</div>
+                            <div>${content}</div>
+                        </div>
+                        ${isOwn ? profileImg : ''}
                     </div>`;
         }).join('');
+        attachMessageEvents();
         container.scrollTop = container.scrollHeight;
     }
+
+    function attachMessageEvents() {
+        const msgs = document.querySelectorAll('.message');
+        msgs.forEach(msg => {
+            // Swipe to reply (right swipe)
+            let touchStartX = 0;
+            msg.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; });
+            msg.addEventListener('touchmove', (e) => {
+                const diff = e.touches[0].clientX - touchStartX;
+                if (diff > 60) {
+                    e.preventDefault();
+                    const senderName = msg.dataset.sender;
+                    if (senderName && senderName !== currentUser.name) {
+                        setReplyingTo(senderName);
+                    }
+                }
+            });
+            // Long press for reaction popup
+            let longPressTimer;
+            msg.addEventListener('touchstart', (e) => {
+                longPressTimer = setTimeout(() => {
+                    showReactionPopup(msg.dataset.id, e);
+                }, 500);
+            });
+            msg.addEventListener('touchend', () => clearTimeout(longPressTimer));
+            msg.addEventListener('touchmove', () => clearTimeout(longPressTimer));
+        });
+    }
+
+    function showReactionPopup(msgId, event) {
+        const popup = document.createElement('div');
+        popup.className = 'reaction-popup';
+        popup.innerHTML = `<button data-emoji="❤️">❤️</button><button data-emoji="👍">👍</button><button data-emoji="🎉">🎉</button><button data-emoji="😢">😢</button><button data-emoji="🔥">🔥</button>`;
+        document.body.appendChild(popup);
+        const rect = event.target.closest('.message').getBoundingClientRect();
+        popup.style.left = rect.left + 'px';
+        popup.style.top = rect.top - 40 + 'px';
+        popup.querySelectorAll('button').forEach(btn => {
+            btn.onclick = () => {
+                alert(`Reacted with ${btn.dataset.emoji} to message ${msgId}`); // Simplified
+                popup.remove();
+            };
+        });
+        setTimeout(() => popup.remove(), 3000);
+    }
+
+    function setReplyingTo(username) {
+        replyingTo = username;
+        document.getElementById('replyBar').style.display = 'flex';
+        document.getElementById('replyToName').innerText = `@${username}`;
+    }
+    function cancelReply() { replyingTo = null; document.getElementById('replyBar').style.display = 'none'; }
 
     function updateProfileUI() {
         if (!currentUser) return;
@@ -247,6 +381,8 @@
         document.getElementById('profilePoints').innerText = currentUser.points;
         document.getElementById('profileVip').innerText = currentUser.vipTier === 'vip' ? 'VIP' : (currentUser.vipTier === 'vip+' ? 'VIP+' : 'Free');
         document.getElementById('profileAdmin').innerText = currentUser.isAdmin ? '✅ Admin' : '❌';
+        if (currentUser.profilePic) document.getElementById('profileAvatarImg').src = currentUser.profilePic;
+        document.getElementById('profileBio').value = currentUser.bio || "";
     }
 
     function renderIconShop() {
@@ -310,12 +446,11 @@
             alert("VIP+ ရပြီ");
         } else alert("မလုံလောက်");
     }
-    function logout() {
-        localStorage.removeItem('currentUser');
-        location.reload();
-    }
-    function escapeHtml(str) {
-        return str.replace(/[&<>]/g, function(m) { if(m === '&') return '&amp;'; if(m === '<') return '&lt;'; if(m === '>') return '&gt;'; return m; });
+    function logout() { localStorage.removeItem('currentUser'); location.reload(); }
+    function escapeHtml(str) { return str.replace(/[&<>]/g, function(m) { if(m === '&') return '&amp;'; if(m === '<') return '&lt;'; if(m === '>') return '&gt;'; return m; }); }
+    function scrollToBottom() {
+        const msgsDiv = document.getElementById('messagesArea');
+        msgsDiv.scrollTop = msgsDiv.scrollHeight;
     }
 
     // Event listeners
@@ -331,8 +466,30 @@
     document.getElementById('buyVipBtn').onclick = buyVip;
     document.getElementById('buyVipPlusBtn').onclick = buyVipPlus;
     document.getElementById('logoutBtn').onclick = logout;
+    document.getElementById('cancelReplyBtn').onclick = cancelReply;
+    document.getElementById('scrollDownBtn').onclick = scrollToBottom;
+    document.getElementById('changePicBtn').onclick = () => document.getElementById('profilePicInput').click();
+    document.getElementById('profilePicInput').onchange = async (e) => {
+        if (e.target.files[0]) {
+            const reader = new FileReader();
+            reader.onload = async (ev) => {
+                currentUser.profilePic = ev.target.result;
+                await saveUser(currentUser);
+                updateProfileUI();
+                renderMessages();
+            };
+            reader.readAsDataURL(e.target.files[0]);
+        }
+    };
+    // Voice recording: press and hold
+    const micBtn = document.getElementById('micBtn');
+    micBtn.addEventListener('mousedown', startRecording);
+    micBtn.addEventListener('mouseup', stopRecording);
+    micBtn.addEventListener('touchstart', startRecording);
+    micBtn.addEventListener('touchend', stopRecording);
 
-    // Auto login from localStorage
+    // Auto-scroll on new message already inside socket events.
+
     const saved = localStorage.getItem('currentUser');
     if (saved) {
         try {
@@ -345,6 +502,7 @@
                 initCanvas();
                 updateProfileUI();
                 renderIconShop();
+                renderMessages();
             }).catch(() => {});
         } catch(e) { console.log(e); }
     }
