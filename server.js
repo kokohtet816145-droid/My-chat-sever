@@ -22,13 +22,11 @@ app.post('/api/users', (req, res) => {
     res.json({ success: true });
 });
 
-// Helper to recalc user points from drawing ratings
 function recalcUserPoints() {
     const pointsMap = new Map();
     messages.forEach(msg => {
         if (msg.type === 'drawing' && msg.totalScore && msg.senderId) {
-            const current = pointsMap.get(msg.senderId) || 0;
-            pointsMap.set(msg.senderId, current + msg.totalScore);
+            pointsMap.set(msg.senderId, (pointsMap.get(msg.senderId) || 0) + msg.totalScore);
         }
     });
     users.forEach(u => {
@@ -60,6 +58,20 @@ io.on('connection', (socket) => {
         io.emit('voice message', data);
     });
 
+    socket.on('image message', (data) => {
+        data.type = 'image';
+        messages.push(data);
+        io.emit('image message', data);
+    });
+
+    socket.on('delete message', ({ msgId, userId }) => {
+        const idx = messages.findIndex(m => m.id === msgId && m.senderId === userId);
+        if (idx !== -1) {
+            messages.splice(idx, 1);
+            io.emit('message deleted', msgId);
+        }
+    });
+
     socket.on('rate drawing', ({ msgId, rating, userId }) => {
         const msg = messages.find(m => m.id === msgId);
         if (msg && msg.type === 'drawing' && !msg.ratings[userId]) {
@@ -71,7 +83,7 @@ io.on('connection', (socket) => {
                 msg.totalScore = total;
                 recalcUserPoints();
                 io.emit('drawing rated', { msgId, totalScore: msg.totalScore });
-                io.emit('update leaderboard'); // trigger frontend refresh
+                io.emit('update leaderboard');
             }
         }
     });
