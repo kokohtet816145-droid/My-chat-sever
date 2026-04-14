@@ -12,7 +12,6 @@ app.use(express.json({ limit: '50mb' }));
 let users = [];
 let messages = [];
 
-// API
 app.get('/api/users', (req, res) => res.json(users));
 app.post('/api/users', (req, res) => {
     const user = req.body;

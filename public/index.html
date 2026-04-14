@@ -16,7 +16,7 @@
             position: relative;
             overflow: hidden;
         }
-        /* Beach Background with multiple images */
+        /* Beach Background - multiple images, blur, overlay (မှိန်ပြီး လှအောင်) */
         body::before {
             content: '';
             position: absolute;
@@ -27,7 +27,7 @@
             background-position: center, left, right;
             background-repeat: no-repeat, no-repeat, no-repeat;
             background-blend-mode: overlay;
-            opacity: 0.4;
+            opacity: 0.45;
             filter: blur(3px);
             z-index: -2;
         }
@@ -36,7 +36,7 @@
             position: absolute;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.3);
+            background: rgba(0,0,0,0.35);
             z-index: -1;
         }
         /* Login Page */
@@ -362,7 +362,7 @@
             border-radius: 2rem;
             align-items: center;
         }
-        /* Popup for reactions & delete */
+        /* Action Popup (reaction + delete) */
         .action-popup {
             position: fixed;
             background: #1e1e2f;
@@ -383,7 +383,7 @@
             color: white;
         }
         .action-popup .delete-btn { color: #ff6666; }
-        /* Profile popup */
+        /* Profile Popup */
         .profile-popup {
             position: fixed;
             top: 50%;
@@ -709,7 +709,7 @@
             const userIconHtml = `<div class="chat-icon ${iconDef.class}">${iconDef.icon}</div>`;
             let content = '';
             if (msg.text) content = escapeHtml(msg.text);
-            else if (msg.imageData) content = `<img src="${msg.imageData}" class="drawing-img"><div class="rating-panel" data-msgid="${msg.id}"><select class="rating-select">${[...Array(10)].map((_,i)=>`<option value="${i+1}">${i+1}</option>`).join('')}</select><button class="rate-btn" data-msgid="${msg.id}">အမှတ်ပေး</button><span class="score-badge">⭐ ${msg.totalScore || 0} မှတ်</span></div>`;
+            else if (msg.imageData) content = `<img src="${msg.imageData}" class="shared-image"><div class="rating-panel" data-msgid="${msg.id}"><select class="rating-select">${[...Array(10)].map((_,i)=>`<option value="${i+1}">${i+1}</option>`).join('')}</select><button class="rate-btn" data-msgid="${msg.id}">အမှတ်ပေး</button><span class="score-badge">⭐ ${msg.totalScore || 0} မှတ်</span></div>`;
             else if (msg.audioData) content = `<audio controls src="${msg.audioData}" style="max-width:150px;"></audio>`;
             const msgColor = isOwn ? (currentUser.chatColor || "#3b82f6") : "";
             return `<div class="message ${isOwn ? 'own' : ''}" data-id="${msg.id}" data-sender="${sender.name}" data-senderid="${sender.id}">
@@ -991,7 +991,6 @@
     const msgsArea = document.getElementById('messagesArea');
     msgsArea.addEventListener('scroll', checkScrollButton);
 
-    // Expose helper for inline onclick
     window.showUserProfile = showUserProfile;
     window.deleteMessage = deleteMessage;
 
